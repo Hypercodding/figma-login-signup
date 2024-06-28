@@ -90,7 +90,7 @@ export const LoginPage = () => {
         <p className="flex justify-content-center mt-3">or</p>
             <div className="flex gap-5 mt-3 ">
                 
-                <Button className="border-round-xl w-100 flex justify-content-center " style={{backgroundColor: 'white', color: 'black', border: '1px solid grey', fontSize: "0.9rem"}}>
+                <Button className="border-round-xl w-100 flex justify-content-center gap-2" style={{backgroundColor: 'white', color: 'black', border: '1px solid grey', fontSize: "0.9rem"}}>
                 <Image
                     src="/google.png"
                     width={20}
@@ -100,7 +100,7 @@ export const LoginPage = () => {
                     />
                     Sign in with Google
                     </Button>
-                <Button className="border-round-xl w-100 flex justify-content-center "  style={{backgroundColor: 'white', color: 'black', border: '1px solid grey', textSizeAdjust: "auto",fontSize: "0.9rem"}}>
+                <Button className="border-round-xl w-100 flex justify-content-center gap-2"  style={{backgroundColor: 'white', color: 'black', border: '1px solid grey', textSizeAdjust: "auto",fontSize: "0.9rem"}}>
                 <Image
                     src="/apple.png"
                     width={20}
