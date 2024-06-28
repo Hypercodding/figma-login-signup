@@ -1,3 +1,7 @@
+import 'primereact/resources/themes/saga-blue/theme.css'; // Choose the theme you installed
+import 'primereact/resources/primereact.min.css'; // Core CSS
+// import 'primeicons/primeicons.css'; // Icons
+import 'primeflex/primeflex.css'; // PrimeFlex (optional)
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";

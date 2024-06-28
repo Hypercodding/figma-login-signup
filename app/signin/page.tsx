@@ -1,14 +1,13 @@
 import Image from "next/image";
 
-import { LoginPage } from "@/components/login.page";
 import styles from "@/styles/page.module.css";
-
+import { SigninPage } from "@/components/signin.page";
 
 export default function Home() {
   return (
     <div className={styles.container}>
       <div className={`${styles.col} ${styles.loginContainer}`}>
-        <LoginPage  /> {/* Apply additional class or style if needed */}
+        <SigninPage  /> {/* Apply additional class or style if needed */}
       </div>
       <div className={styles.col} style={{borderRadius: "45px 0 0 45px"}} >
         <div className={styles.imageContainer}>
