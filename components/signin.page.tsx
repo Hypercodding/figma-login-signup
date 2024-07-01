@@ -1,31 +1,65 @@
 "use client"
-import { Formik, Form, Field, useFormik } from "formik"
+import {  useFormik } from "formik"
 import { InputText } from "primereact/inputtext";
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
-import { Checkbox } from 'primereact/checkbox';
+import { useMutation, useQueryClient } from "react-query";
+import axios from "axios";
+import { Toast } from "primereact/toast";
+import { useRef } from "react";
+
         
 import './styles.css';
 import Image from "next/image";
 
+interface User {
+    email: string;
+    password: string
+}
 
+const useLoginValidation = ()=>{
+    return useMutation(async(user: User)=>{
+        const response = await axios.post('http://127.0.0.1:8000/users/user-login', user);
+        return response.data;
+    })
+}
 
 export const SigninPage = () => {
+    const toast: any = useRef(null);
+    const showSuccess = (message: string) => {
+        toast.current.show({severity:'success', summary: 'Success', detail:message, life: 3000});
+    }
+
+    const showError = (message: string) => {
+        toast.current.show({severity:'error', summary: 'Error', detail:message, life: 3000});
+    }
+ 
+    const loginValidation = useLoginValidation();
+    const queryClient = useQueryClient();
 
     const formik = useFormik({
         initialValues: {
            email: '',
            password: '',
-           checkbox: false
           },
-        onSubmit:(values)=>{
-            console.log(values);
+        onSubmit:async (values)=>{
+            try{
+                console.log(values);
+                await loginValidation.mutateAsync(values);
+                showSuccess("Logged in Successfully")
+                formik.resetForm()
+            }     
+            catch(error){
+                console.error("Error adding user:", error);
+                showError("Wrong Credentials")
+            }
         }
     })
 
     
     return (
     <>
+    <Toast ref={toast} />
     <div className=" mt-6">
         <div className="login-box">
             <h1 className="heading">Welcome back!</h1>
@@ -63,18 +97,8 @@ export const SigninPage = () => {
                         />
                         </div>
                     </div>
-                    <div className="flex align-items-center mt-2">
-                            <Checkbox 
-                                inputId="checkbox" 
-                                name="checkbox" 
-                                checked={formik.values.checkbox} 
-                                onChange={(e) => formik.setFieldValue('checkbox', e.checked)
-                                
-                                }
-                            />
-                            <label htmlFor="checkbox" className="ml-2">I agree to the <a href="" style={{color: 'black'}}>terms & policy</a></label>
-                        </div>
-                    <Button type="submit" className="mt-3 border-round-xl w-full flex justify-content-center" style={{backgroundColor: '#304e1a'}}>Sign up</Button>
+                    
+                    <Button type="submit" className="mt-3 border-round-xl w-full flex justify-content-center" style={{backgroundColor: '#304e1a'}}>Sign in</Button>
                 </form>
 
         </div>

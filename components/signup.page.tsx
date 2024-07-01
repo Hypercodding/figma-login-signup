@@ -1,17 +1,43 @@
 "use client"
-import { Formik, Form, Field, useFormik } from "formik"
+import { useFormik } from "formik"
 import { InputText } from "primereact/inputtext";
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
-        
+import { useMutation, useQueryClient } from "react-query";
+import { useRef } from "react";
+import { Toast } from 'primereact/toast';
+
 import './styles.css';
 import Image from "next/image";
+import axios from "axios";
 
+interface User{
+    name: string;
+    email: string;
+    password: string
+}
 
+const useAddUse =() => {
+    return useMutation(async (user:User)=>{
+    const response = await axios.post('http://127.0.0.1:8000/users/', user);
+    return response.data;
+});
+};
 
 export const LoginPage = () => {
+    const toast: any = useRef(null);
 
+    const showSuccess = (message: string) => {
+        toast.current.show({severity:'success', summary: 'Success', detail:message, life: 3000});
+    }
+
+    const showError = (message: string) => {
+        toast.current.show({severity:'error', summary: 'Error', detail:message, life: 3000});
+    }
+
+    const addUser = useAddUse();
+    const queryClient = useQueryClient();
     const formik = useFormik({
         initialValues: {
            name: '',
@@ -19,14 +45,26 @@ export const LoginPage = () => {
            password: '',
            checkbox: false
           },
-        onSubmit:(values)=>{
-            console.log(values);
+        onSubmit:async (values)=>{
+            if (!values.checkbox) {
+                showError("Please agree to the terms & policy");
+                return;
+              }
+            try {
+                await addUser.mutateAsync(values); // Use mutateAsync for async mutations
+                showSuccess('User added successfully');
+                formik.resetForm(); // Reset form after successful submission
+            } catch (error) {
+                console.error("Error adding user:", error);
+                showError('Failed to add user');
+            }
         }
     })
 
     
     return (
     <>
+    <Toast ref={toast} />
     <div className=" mt-6">
         <div className="login-box">
             <h1 className="heading">Sign Up</h1>

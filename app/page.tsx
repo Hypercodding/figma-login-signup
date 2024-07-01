@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { LoginPage } from "@/components/login.page";
+import { LoginPage } from "@/components/signup.page";
 import styles from "@/styles/page.module.css";
 
 
