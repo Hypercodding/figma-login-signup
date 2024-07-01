@@ -49,7 +49,7 @@
 }
 
 
-@media (max-width: 350px) {
+@media (max-width: 450px) {
   .container {
     flex-direction: column; 
     width: 100%;
@@ -58,5 +58,22 @@
   }
   .imageContainer {
    display: none /* height: auto; Hide the image container on mobile screens */
+  }
+}
+
+
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    width: 100%;
+    height: auto; /* Stack columns on top of each other on smaller screens */
+  }
+  
+  .imageContainer {
+    display: none; /* Ensure the image container is displayed */
+    width: 100%;
+    height: 100%; /* Maintain full height of container */
+    border-radius: 20px 0 0 20px; /* Top-left, bottom-left */
+    /* You may need to adjust other styles based on your specific design */
   }
 }
