@@ -44,7 +44,7 @@ export const SigninPage = () => {
                 formik.resetForm();
             } catch (error) {
                 console.error("Error logging in:", error);
-                showError(error.message || "Wrong Credentials");
+                showError( "Wrong Credentials");
             }
         }
     });
