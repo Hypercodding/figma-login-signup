@@ -1,16 +1,17 @@
 "use client"
 import { useFormik } from "formik"
-import { InputText } from "primereact/inputtext";
-import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
 import { Checkbox } from 'primereact/checkbox';
 import { useMutation, useQueryClient } from "react-query";
 import { useRef } from "react";
 import { Toast } from 'primereact/toast';
-
-import './styles.css';
 import Image from "next/image";
 import axios from "axios";
+import EmailInput from "@/components/FormElements/EmailInput";
+import PasswordInput from "@/components/FormElements/PasswordInput";
+import NameInput from "@/components/FormElements/NameInput";
+import './styles.css';
+import ToastComponents from "./ToastComponents";
 
 interface User{
     name: string;
@@ -26,18 +27,9 @@ const useAddUse =() => {
 };
 
 export const LoginPage = () => {
-    const toast: any = useRef(null);
-
-    const showSuccess = (message: string) => {
-        toast.current.show({severity:'success', summary: 'Success', detail:message, life: 3000});
-    }
-
-    const showError = (message: string) => {
-        toast.current.show({severity:'error', summary: 'Error', detail:message, life: 3000});
-    }
+   const {showError, toast, showSuccess} = ToastComponents();
 
     const addUser = useAddUse();
-    const queryClient = useQueryClient();
     const formik = useFormik({
         initialValues: {
            name: '',
@@ -69,45 +61,26 @@ export const LoginPage = () => {
         <div className="login-box">
             <h1 className="heading">Sign Up</h1>
                 <form onSubmit={formik.handleSubmit}>
-                    <div className="flex flex-column gap-2 mt-6">
-                        <label htmlFor="name"><b>Name</b></label>
-                        <InputText 
-                        placeholder="name"
-                        id="name" 
-                        aria-describedby="name-help" 
-                        className="border-round-xl" 
-                        
-                        {...formik.getFieldProps('name')}
-                        />
-                    </div>
-                    <div className="flex flex-column gap-2 mt-3">
-                        <label htmlFor="email"><b>Email address</b></label>
-                        <InputText 
-                        placeholder="email@mail.com"
-                        id="email" 
-                        aria-describedby="email-help" 
-                        className="border-round-xl" 
-                        
-                        {...formik.getFieldProps('email')}
-                        />
-                        
-                    </div>
-                    <div className="flex flex-column gap-2 border-round-xl mt-3">
-                        <label htmlFor="password"><b>Password</b></label>
-                        <div className="border-round-xl">
-                        <Password
-                        placeholder="password"
-                            id="password"
-                            name="password"
-                            aria-describedby="password-help"
-                            value={formik.values.password}
+                        <NameInput
+                            id="name"
+                            value={formik.values.name}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            inputStyle={{borderRadius: "0.75rem", width: "100%"}} style={{borderRadius: "0.75rem", width: "100% "}}
-                            feedback={false}
                         />
-                        </div>
-                    </div>
+                    <EmailInput
+                         id="email"
+                         value={formik.values.email}
+                         onChange={formik.handleChange}
+                         onBlur={formik.handleBlur}
+                    />
+                    <PasswordInput
+                        id="password"
+                        name="password"
+                        value={formik.values.password}
+                         onChange={formik.handleChange}
+                         onBlur={formik.handleBlur}
+                         showForgotPassword= {false}
+                    />
                     <div className="flex align-items-center mt-2">
                             <Checkbox 
                                 inputId="checkbox" 
@@ -119,7 +92,12 @@ export const LoginPage = () => {
                             />
                             <label htmlFor="checkbox" className="ml-2">I agree to the <a href="" style={{color: 'black'}}>terms & policy</a></label>
                         </div>
-                    <Button type="submit" className="mt-3 border-round-xl w-full flex justify-content-center" style={{backgroundColor: '#304e1a'}}>Sign up</Button>
+                    <Button 
+                        type="submit" 
+                        className="mt-3 border-round-xl w-full flex justify-content-center" 
+                        style={{backgroundColor: '#304e1a'}}>
+                    Sign up
+                    </Button>
                 </form>
 
         </div>
