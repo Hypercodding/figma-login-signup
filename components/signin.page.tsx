@@ -97,7 +97,7 @@ export const SigninPage = () => {
                         </Button>
                     </div>
                     <div className="flex justify-content-center mt-3">
-                        <h4>Don't have an account? <a href="/">Sign Up</a></h4>
+                        <h4>Don&apos;t have an account? <a href="/">Sign Up</a></h4>
                     </div>
                 </div>
             </div>
