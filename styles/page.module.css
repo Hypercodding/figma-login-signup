@@ -47,3 +47,16 @@
    display: none /* height: auto; Hide the image container on mobile screens */
   }
 }
+
+
+@media (max-width: 350px) {
+  .container {
+    flex-direction: column; 
+    width: 100%;
+    height: auto;
+    padding: 20px;/* Stack columns on top of each other on smaller screens */
+  }
+  .imageContainer {
+   display: none /* height: auto; Hide the image container on mobile screens */
+  }
+}
