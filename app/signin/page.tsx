@@ -1,7 +1,8 @@
+"use client"
 import Image from "next/image";
-
 import styles from "@/styles/page.module.css";
 import { SigninPage } from "@/components/signin.page";
+
 
 export default function Home() {
   return (

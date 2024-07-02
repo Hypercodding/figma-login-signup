@@ -19,6 +19,8 @@ interface User {
 const useLoginValidation = () => {
     return useMutation(async (user: User) => {
         const response = await axios.post('http://127.0.0.1:8000/users/user-login', user);
+        const setToken = response.data.access_token;
+        localStorage.setItem("access_token", setToken)
         return response.data;
     });
 }
@@ -40,7 +42,11 @@ export const SigninPage = () => {
                 }
                 await loginValidation.mutateAsync(values);
                 showSuccess("Logged in Successfully");
-                router.push("/home");
+                const token = localStorage.getItem('access_token');
+                if (token) {
+                    document.cookie = `access_token=${token}; path=/;`;
+                    router.push('/home');
+                }
                 formik.resetForm();
             } catch (error) {
                 console.error("Error logging in:", error);
