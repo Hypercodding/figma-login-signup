@@ -23,7 +23,7 @@ interface User{
 
 const useAddUse =() => {
     return useMutation(async (user:User)=>{
-    const response = await axios.post('http://127.0.0.1:8000/users/', user);
+    const response = await axios.post('https://boilerplate-backend-python-production.up.railway.app/users/', user);
     return response.data;
 });
 };

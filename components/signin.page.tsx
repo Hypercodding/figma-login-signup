@@ -18,7 +18,7 @@ interface User {
 
 const useLoginValidation = () => {
     return useMutation(async (user: User) => {
-        const response = await axios.post('http://127.0.0.1:8000/users/user-login', user);
+        const response = await axios.post('https://boilerplate-backend-python-production.up.railway.app/users/user-login', user);
         const setToken = response.data.access_token;
         localStorage.setItem("access_token", setToken)
         return response.data;
