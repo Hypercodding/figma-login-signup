@@ -16,12 +16,12 @@ import { getUserIdFromToken } from '@/utilities/verifyToken';
 export default function Navbar() {
     const router = useRouter();
     const [visible, setVisible] = useState(false);
-    const menu = useRef(null);
-    const [userid, setUserid] = useState(null);
+    const menu: any = useRef(null);
+    const [userid, setUserid]: any = useState(null);
 
     useEffect(() => {
         // Fetch user_id from decoded token on component mount
-        const token = localStorage.getItem("access_token");
+        const token: any = localStorage.getItem("access_token");
         const fetchUserId = async () => {
           const userIdFromToken = await getUserIdFromToken(token);
           if (userIdFromToken) {
@@ -64,7 +64,7 @@ export default function Navbar() {
         }
     ];
 
-    const itemRenderer = (item) => (
+    const itemRenderer = (item: any) => (
         <a className="flex align-items-center p-menuitem-link">
             <span className={item.icon} />
             <span className="mx-2">{item.label}</span>

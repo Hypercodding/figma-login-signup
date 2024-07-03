@@ -41,7 +41,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadSuccess }) => {
         let _totalSize = totalSize;
         let files = e.files;
 
-        Object.keys(files).forEach((key) => {
+        Object.keys(files).forEach((key: any) => {
             _totalSize += files[key].size || 0;
         });
 
@@ -86,7 +86,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadSuccess }) => {
         );
     };
 
-    const itemTemplate = (file: File, props: any) => {
+    const itemTemplate = (file: any, props: any) => {
         return (
             <div className="flex align-items-center flex-wrap">
                 <div className="flex align-items-center" style={{ width: '40%' }}>
@@ -126,7 +126,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUploadSuccess }) => {
             <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" />
 
             <FileUpload ref={fileUploadRef} name="files" multiple accept="image/*" maxFileSize={1000000}
-                customUpload onUpload={()=>{console.log("clicked")}} onSelect={()=>{console.log("clicked")}} onError={onTemplateClear} onClear={onTemplateClear}
+                customUpload onUpload={()=>{console.log("upload cliced")}} onSelect={()=>{console.log("clicked")}} onError={onTemplateClear} onClear={onTemplateClear}
                 headerTemplate={headerTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
                 chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
         </div>
