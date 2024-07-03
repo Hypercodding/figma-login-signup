@@ -25,10 +25,14 @@ export async function middleware(request: NextRequest) {
     if (!verifiedToken && path === "/home") {
         return NextResponse.redirect(new URL("/signin", request.url));
     }
+    
+    if (!verifiedToken && path === "/home/tasks") {
+        return NextResponse.redirect(new URL("/signin", request.url));
+    }
 
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ["/home", "/signin", "/auth"]
+    matcher: ["/home", "/signin", "/auth", "/home/tasks"]
 };
