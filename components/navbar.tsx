@@ -21,14 +21,20 @@ export default function Navbar() {
 
     useEffect(() => {
         const token: any = localStorage.getItem("access_token");
+        console.log(token)
         const fetchUserId = async () => {
             const userIdFromToken = await getUserIdFromToken(token);
             if (userIdFromToken) {
+                console.log(userIdFromToken)
                 setUserid(userIdFromToken);
+                
+                console.log(setUserid(userIdFromToken))
             }
         };
         fetchUserId();
-    }, []);
+    }, [router]);
+
+    console.log("userid", userid)
 
     const { data: image, isLoading, error } = useQuery(['image', userid], async () => {
         const response = await axios.get(`https://boilerplate-backend-python-production.up.railway.app/image/images/?user_id=${userid}`);
@@ -44,7 +50,7 @@ export default function Navbar() {
             const formData = new FormData();
             formData.append('file', file);
 
-            const response = await axios.post(`http://127.0.0.1:8000/image/images/?user_id=${userid}`, formData, {
+            const response = await axios.post(`https://boilerplate-backend-python-production.up.railway.app/image/images/?user_id=${userid}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -134,6 +140,7 @@ export default function Navbar() {
                 breakpoint="767px"
             />
             <Avatar
+            size='large'
                 image={image} // Assuming image is passed as URL here
                 shape="circle"
                 onClick={(e) => menu.current.toggle(e)}
