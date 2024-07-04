@@ -1,47 +1,70 @@
-// Navbar.jsx
-
 import { Menubar } from 'primereact/menubar';
 import { Badge } from 'primereact/badge';
 import { Avatar } from 'primereact/avatar';
 import { TieredMenu } from 'primereact/tieredmenu';
 import { Dialog } from 'primereact/dialog';
-import ImageUpload from './imageUpload';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getUserIdFromToken } from '@/utilities/verifyToken';
-// import { getUserIdFromToken } from '../utils/auth'; // Adjust import path as per your project structure
+import { FileUpload } from 'primereact/fileupload';
+import { Toast } from 'primereact/toast';
 
 export default function Navbar() {
+    const toast: any = useRef(null);
+
     const router = useRouter();
     const [visible, setVisible] = useState(false);
     const menu: any = useRef(null);
     const [userid, setUserid]: any = useState(null);
 
     useEffect(() => {
-        // Fetch user_id from decoded token on component mount
         const token: any = localStorage.getItem("access_token");
         const fetchUserId = async () => {
-          const userIdFromToken = await getUserIdFromToken(token);
-          if (userIdFromToken) {
-            setUserid(userIdFromToken);
-          }
+            const userIdFromToken = await getUserIdFromToken(token);
+            if (userIdFromToken) {
+                setUserid(userIdFromToken);
+            }
         };
         fetchUserId();
-      }, []);
+    }, []);
 
-      const { data: image, isLoading, error } = useQuery(['image', userid], async () => {
-        
-            const response = await axios.get(`http://127.0.0.1:8000/image/images/?user_id=${userid}`);
-            return response.data; // Assuming the response contains image data
+    const { data: image, isLoading, error } = useQuery(['image', userid], async () => {
+        const response = await axios.get(`https://boilerplate-backend-python-production.up.railway.app/image/images/?user_id=${userid}`);
+        const data = response.data;
+        const url = data.map((name: any) => name.url);
+        return url[0]; // Assuming the first image is the avatar
     });
-    
-    const handleSubmit = () => {
-        // Clear the access_token cookie
-        document.cookie = 'access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT;';
 
-        // Redirect to /signin page
+    const queryClient = useQueryClient();
+
+    const uploadMutation = useMutation(
+        async (file: any) => {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await axios.post(`http://127.0.0.1:8000/image/images/?user_id=${userid}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            return response.data;
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries(['image', userid]);
+                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Image uploaded successfully', life: 3000 });
+                setVisible(false);
+            },
+            onError: () => {
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Failed to upload image', life: 3000 });
+            }
+        }
+    );
+
+    const handleSubmit = () => {
+        document.cookie = 'access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT;';
         router.push('/signin');
     };
 
@@ -121,10 +144,22 @@ export default function Navbar() {
 
     return (
         <div className="card megamenu">
+            <Toast ref={toast} />
             <Menubar model={items} end={end} />
             <Dialog header="Upload Image" visible={visible} onHide={() => setVisible(false)}>
-                <ImageUpload onUploadSuccess={() => setVisible(false)} />
+                <FileUpload 
+                    name="file"
+                    customUpload
+                    uploadHandler={(e: any) => {
+                        if (e.files && e.files.length > 0) {
+                            uploadMutation.mutate(e.files[0]);
+                        }
+                    }}
+                    accept="image/*"
+                    maxFileSize={1000000} // Limit file size to 1MB
+                    emptyTemplate={<p className="p-m-0">Drag and drop image here to upload.</p>}
+                />
             </Dialog>
         </div>
-    )
+    );
 }
