@@ -138,9 +138,11 @@ export default function Navbar() {
                 popup
                 ref={menu}
                 breakpoint="767px"
+                className='mt-2'
+                style={{borderRadius: "5px"}}
             />
             <Avatar
-            size='large'
+            // size='large'
                 image={image} // Assuming image is passed as URL here
                 shape="circle"
                 onClick={(e) => menu.current.toggle(e)}
@@ -152,7 +154,7 @@ export default function Navbar() {
     return (
         <div className="card megamenu">
             <Toast ref={toast} />
-            <Menubar model={items} end={end} />
+            <Menubar model={items} end={end} style={{borderRadius: "0px 0px 10px 10px"}} />
             <Dialog header="Upload Image" visible={visible} onHide={() => setVisible(false)}>
                 <FileUpload 
                     name="file"
