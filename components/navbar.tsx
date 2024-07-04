@@ -132,7 +132,7 @@ export default function Navbar() {
     ];
 
     const end = (
-        <div className="flex align-items-center gap-2">
+        <div className="flex align-items-center">
             <TieredMenu
                 model={MenuItems}
                 popup
@@ -146,7 +146,7 @@ export default function Navbar() {
                 image={image} // Assuming image is passed as URL here
                 shape="circle"
                 onClick={(e) => menu.current.toggle(e)}
-                className='mr-3'
+                className=''
             />
         </div>
     );
