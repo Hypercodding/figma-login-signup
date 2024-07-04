@@ -10,11 +10,24 @@ import EmailInput from "@/components/FormElements/EmailInput";
 import PasswordInput from "@/components/FormElements/PasswordInput";
 import ToastComponents from "./ToastComponents";
 import { useRouter } from "next/navigation";
+import * as Yup from 'yup';
 
 interface User {
     email: string;
     password: string;
 }
+
+const loginSchema = Yup.object().shape({
+
+    email: Yup.string().email('Invalid email').required('Required'),
+    password: Yup.string()
+  .required('Password is required.')
+  .min(8, 'Password must be at least 8 characters.')
+  .matches(/[a-zA-Z]/, 'Password must contain at least one letter.')
+  .matches(/[0-9]/, 'Password must contain at least one number.')
+  .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain at least one special character.')
+
+})
 
 const useLoginValidation = () => {
     return useMutation(async (user: User) => {
@@ -35,6 +48,7 @@ export const SigninPage = () => {
             email: '',
             password: '',
         },
+        validationSchema: loginSchema,
         onSubmit: async (values) => {
             try {
                 if (!values.email || !values.password) {
@@ -54,7 +68,7 @@ export const SigninPage = () => {
             }
         }
     });
-
+    const {errors, touched} = formik
     return (
         <>
             <Toast ref={toast} />
@@ -69,6 +83,8 @@ export const SigninPage = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                         />
+                          {errors.email && touched.email && <span style={{color: "red"}}>{errors.email}</span>}
+
                         <PasswordInput
                             id="password"
                             name="password"
@@ -76,6 +92,8 @@ export const SigninPage = () => {
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                         />
+                        {errors.password && touched.password && <span style={{color: "red"}}>{errors.password}</span>}
+
                         <Button type="submit" className="mt-3 border-round-xl w-full flex justify-content-center" style={{ backgroundColor: '#304e1a' }}>Sign in</Button>
                     </form>
                 </div>

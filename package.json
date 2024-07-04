@@ -19,7 +19,8 @@
     "primereact": "^10.6.6",
     "react": "^18",
     "react-dom": "^18",
-    "react-query": "^3.39.3"
+    "react-query": "^3.39.3",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",
