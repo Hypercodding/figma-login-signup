@@ -31,7 +31,7 @@ const loginSchema = Yup.object().shape({
 
 const useLoginValidation = () => {
     return useMutation(async (user: User) => {
-        const response = await axios.post('http://my-python-backend-env.eba-sfhbunzz.us-west-2.elasticbeanstalk.com/users/user-login', user);
+        const response = await axios.post('https://boilerplate-backend-python-production.up.railway.app/users/user-login', user);
         const setToken = response.data.access_token;
         localStorage.setItem("access_token", setToken)
         return response.data;

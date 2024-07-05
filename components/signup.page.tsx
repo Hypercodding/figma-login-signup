@@ -24,7 +24,7 @@ interface User{
 
 const useAddUse =() => {
     return useMutation(async (user:User)=>{
-    const response = await axios.post('http://my-python-backend-env.eba-sfhbunzz.us-west-2.elasticbeanstalk.com/users/', user);
+    const response = await axios.post('https://boilerplate-backend-python-production.up.railway.app/users/', user);
     return response.data;
 });
 };
